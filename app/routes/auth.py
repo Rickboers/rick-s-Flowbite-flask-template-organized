@@ -1,13 +1,10 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user, login_required, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
-from .. import db, bcrypt, oauth, limiter
+from .. import db, bcrypt, oauth
 from ..models import User
 from ..utils import (
     redirect_if_authenticated,
-    generate_reset_token,
-    confirm_reset_token,
-    send_reset_email,
 )
 from ..forms import LoginForm, RegistrationForm
 import secrets
@@ -31,7 +28,6 @@ def register():
 
 
 @bp.route("/login", methods=["GET", "POST"])
-@limiter.limit("15 per minute")
 @redirect_if_authenticated
 def login():
     form = LoginForm()
@@ -77,43 +73,3 @@ def authorize():
         db.session.commit()
     login_user(user)
     return redirect(url_for("main.app1"))
-
-
-@bp.route("/reset_password", methods=["GET", "POST"])
-@redirect_if_authenticated
-def reset_request():
-    if request.method == "POST":
-        email = request.form["email"]
-        token = generate_reset_token(email)
-        reset_url = url_for("auth.reset_token", token=token, _external=True)
-        send_reset_email(email, reset_url)
-        flash(
-            "An email has been sent with instructions to reset your password.", "info"
-        )
-        return redirect(url_for("auth.login"))
-    return render_template("reset_request.html")
-
-
-@bp.route("/reset_password/<token>", methods=["GET", "POST"])
-@redirect_if_authenticated
-def reset_token(token):
-    email = confirm_reset_token(token)
-    if not email:
-        flash("That is an invalid or expired token", "warning")
-        return redirect(url_for("auth.reset_request"))
-
-    if request.method == "POST":
-        password = request.form["password"]
-        hashed_password = bcrypt.generate_password_hash(password).decode("utf-8")
-
-        user = User.query.filter_by(email=email).first()
-        if user:
-            user.password_hash = hashed_password
-            db.session.commit()
-            flash("Your password has been updated!", "success")
-            return redirect(url_for("auth.login"))
-        else:
-            flash("User not found.", "danger")
-            return redirect(url_for("auth.reset_request"))
-
-    return render_template("reset_token.html")

@@ -1,43 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Questions to Answer</title>
-    <link rel="stylesheet" href="{{url_for('static',filename='dist/css/output.css')}}">
-</head>
-
-<body class="bg-gray-100">
-    <div class="container mx-auto px-4 py-8">
-        <div class="bg-white rounded-lg shadow-lg p-6">
-            <h1 class="text-2xl font-bold mb-4">Questions to Answer</h1>
-            <div class="border-2 border-gray-300 rounded-lg p-4 min-h-[300px]">
-                <!-- Content will go here -->
-            </div>
-            <button id="copyLink" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Copy Link with User ID
-            </button>
-        </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App</title>
+    <link
+      rel="stylesheet"
+      href="{{url_for('static',filename='dist/css/output.css')}}"
+    />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="text-center">Hello, world!</h1>
+      <p class="text-center">This is a simple Flask app with Tailwind CSS.</p>
     </div>
 
-    <script>
-        document.getElementById('copyLink').addEventListener('click', function() {
-            const currentUserId = '{{ user_id }}';
-            const linkWithId = `${window.location.origin}/questions/${currentUserId}`;
-            
-            navigator.clipboard.writeText(linkWithId).then(function() {
-                alert('Link copied to clipboard!');
-            }, function(err) {
-                console.error('Could not copy text: ', err);
-            });
-        });
-    </script>
-
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
-
-</body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.js"></script>
+  </body>
 </html>
