@@ -1,3 +1,5 @@
+![Project Screenshot](static\2024-12-30 06_41_57-Flowbite Flask - Brave.png)
+
 commands to start:
 
 1. Make new python virtual enviroment
