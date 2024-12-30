@@ -1,4 +1,4 @@
-![Project Screenshot](static\2024-12-30 06_41_57-Flowbite Flask - Brave.png)
+![Project Screenshot](static/2024-12-30%2006_41_57-Flowbite%20Flask%20-%20Brave.png)
 
 commands to start:
 
